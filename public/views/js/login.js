@@ -1,14 +1,12 @@
-var form = document.getElementById("signupForm");
-form.addEventListener("submit", signUp);
+var form = document.getElementById("loginForm");
+form.addEventListener("submit", logIn);
 
-var name = document.querySelector("#name");
 var email = document.querySelector("#email");
 var pwd = document.querySelector("#password");
 
-async function signUp(e) {
+async function logIn(e) {
   e.preventDefault();
   const user = {
-    name: e.target.name.value,
     email: e.target.email.value,
     password: e.target.password.value,
   };
@@ -16,6 +14,7 @@ async function signUp(e) {
     let res;
     res = await axios.post("http://localhost:4000/user/signUp", user);
     console.log(res);
+    alert("User logged in successfully");
   } catch (e) {
     console.log(e);
   }
