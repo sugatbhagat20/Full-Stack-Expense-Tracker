@@ -20,3 +20,13 @@ exports.addUser = (req, res, next) => {
       console.log(err);
     });
 };
+
+exports.getUsers = (req, res, next) => {
+  users
+    .findAll()
+    .then((users) => {
+      res.json(users);
+      // console.log(users);
+    })
+    .catch((err) => console.log(err));
+};

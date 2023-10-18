@@ -6,15 +6,25 @@ var pwd = document.querySelector("#password");
 
 async function logIn(e) {
   e.preventDefault();
-  const user = {
+  const userDetails = {
     email: e.target.email.value,
     password: e.target.password.value,
   };
   try {
-    let res;
-    res = await axios.post("http://localhost:4000/user/signUp", user);
-    console.log(res);
-    alert("User logged in successfully");
+    const users = await axios.get("http://localhost:4000/user/getUsers");
+    // console.log(res);
+    // alert("User logged in successfully");
+    users.data.forEach((user) => {
+      if (user.email == userDetails.email) {
+        if (user.password == userDetails.password) {
+          alert("User logged in successfully");
+        } else {
+          alert("User not authorized");
+        }
+      } else {
+        alert("User not found");
+      }
+    });
   } catch (e) {
     console.log(e);
   }
