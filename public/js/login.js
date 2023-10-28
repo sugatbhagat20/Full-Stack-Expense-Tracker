@@ -11,7 +11,19 @@ async function logIn(e) {
     password: e.target.password.value,
   };
   try {
-    const users = await axios.post("http://localhost:4000/user/logIn", user);
+    const users = await axios
+      .post("http://localhost:4000/user/logIn", user)
+      .then((result) => {
+        alert(result.data.message);
+        localStorage.setItem("token", result.data.token);
+        window.location.href = "../html/expense.html";
+      })
+      .catch((error) => {
+        if (error.response) {
+          const msg = error.response.data.message;
+          alert(msg);
+        }
+      });
     // console.log(res);
     // alert("User logged in successfully");
     // users.data.forEach((user) => {
@@ -25,7 +37,6 @@ async function logIn(e) {
     //     alert("User not found");
     //   }
     // });
-    window.location.href = "../html/expense.html";
   } catch (e) {
     console.log(e);
   }

@@ -14,7 +14,7 @@ window.addEventListener("DOMContentLoaded", () => {
 
 async function addItem(e) {
   e.preventDefault();
-
+  const token = localStorage.getItem("token");
   var selectElement = document.querySelector("#expense");
   var input3 = selectElement.options[selectElement.selectedIndex].value;
 
@@ -54,19 +54,24 @@ async function addItem(e) {
 
     //append li to ul
     list.appendChild(li);
-    await axios.post("http://localhost:4000/expense/addExpense", expense);
+    await axios.post("http://localhost:4000/expense/addExpense", expense, {
+      headers: { Authorization: token },
+    });
   } catch (e) {
     console.log(e);
   }
 }
 
 async function del(e) {
+  const token = localStorage.getItem("token");
   let id = e.target.id;
   console.log(id);
 
   if (e.target.classList.contains("delete")) {
     var li = e.target.parentElement;
-    await axios.delete(`http://localhost:4000/expense/deleteExpense/${id}`);
+    await axios.delete(`http://localhost:4000/expense/deleteExpense/${id}`, {
+      headers: { Authorization: token },
+    });
 
     list.removeChild(li);
   }
@@ -90,7 +95,10 @@ async function del(e) {
 
 async function renderList(e) {
   try {
-    const expenses = await axios.get("http://localhost:4000/expense/expenses");
+    const token = localStorage.getItem("token");
+    const expenses = await axios.get("http://localhost:4000/expense/expenses", {
+      headers: { Authorization: token },
+    });
 
     expenses.data.forEach((expense) => {
       var li = document.createElement("li");

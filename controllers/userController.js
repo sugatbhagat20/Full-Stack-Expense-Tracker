@@ -1,5 +1,13 @@
 const users = require("../model/userModel");
 const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
+
+function generateAccessToken(id, email) {
+  return jwt.sign(
+    { userId: id, email: email },
+    "kjhsgdfiuiew889kbasgdfskjabsdfjlabsbdljhsd"
+  );
+}
 
 exports.addUser = (req, res, next) => {
   console.log(req.body);
@@ -33,17 +41,21 @@ exports.logIn = (req, res, next) => {
       if (user) {
         bcrypt.compare(password, user.password, (err, result) => {
           if (result === true) {
-            res
+            return res
               .status(200)
-              .json({ success: true, message: "Login Successful!" });
+              .json({
+                success: true,
+                message: "Login Successful!",
+                token: generateAccessToken(user.id, user.email),
+              });
           } else {
-            res
+            return res
               .status(401)
               .json({ success: false, message: "Password Incorrect!" });
           }
         });
       } else {
-        res
+        return res
           .status(404)
           .json({ success: false, message: "User doesn't Exists!" });
       }
