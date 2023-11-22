@@ -12,7 +12,7 @@ payment.addEventListener("click", buyPremium);
 window.addEventListener("DOMContentLoaded", () => {
   renderList();
 });
-
+document.addEventListener("DOMContentLoaded", isPremiumUser);
 async function buyPremium(e) {
   const token = localStorage.getItem("token");
   const res = await axios.get("http://localhost:4000/purchase/premium", {
@@ -36,6 +36,7 @@ async function buyPremium(e) {
 
       //console.log(res);
       alert("Welcome to our Premium Membership");
+      window.location.reload();
       localStorage.setItem("token", res.data.token);
     },
   };
@@ -67,7 +68,12 @@ async function isPremiumUser() {
     headers: { Authorization: token },
   });
   if (res.data.isPremiumUser) {
-    buyPremium.innerHTML = "Premium Member";
+    payment.innerHTML = "Premium Member";
+    payment.className = "btn btn-warning";
+    //reportsLink.removeAttribute("onclick");
+    //leaderboardLink.removeAttribute("onclick");
+    //leaderboardLink.setAttribute("href", "/premium/getLeaderboardPage");
+    payment.removeEventListener("click", buyPremium);
   }
 }
 

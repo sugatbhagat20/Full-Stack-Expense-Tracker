@@ -9,7 +9,7 @@ exports.purchasePremium = async (req, res) => {
       key_secret: process.env.RAZORPAY_KEY_SECRET,
     });
     const amount = 22000;
-    console.log("Entered in Controller");
+    //console.log("Entered in Controller");
     rzp.orders.create({ amount, currency: "INR" }, (err, order) => {
       if (err) {
         //throw new Error(JSON.stringify(err));
@@ -34,11 +34,24 @@ exports.updateTransactionStatus = async (req, res) => {
   try {
     const { payment_id, order_id } = req.body;
     const Order = await order.findOne({ where: { orderid: order_id } });
-    await Order.update({ paymentid: payment_id, status: "SUCCESSFUL" });
-    await req.user.update({ ispremiumuser: true, order_id: order_id });
-    return res
-      .status(202)
-      .json({ success: true, message: "Transaction Successful" });
+    const promise1 = Order.update({
+      paymentid: payment_id,
+      status: "SUCCESSFUL",
+    });
+    const promise2 = req.user.update({
+      isPremiumUser: true,
+      order_id: order_id,
+    });
+
+    Promise.all([promise1, promise2])
+      .then(() => {
+        return res
+          .status(202)
+          .json({ success: true, message: "Transaction Successful" });
+      })
+      .catch((err) => {
+        throw new Error(err);
+      });
   } catch (err) {
     console.log(err);
     res.status(403).json({ error: err, message: "Something went wrong" });
@@ -49,11 +62,24 @@ exports.failedTransactionStatus = async (req, res) => {
   try {
     const { payment_id, order_id } = req.body;
     const Order = await order.findOne({ where: { orderid: order_id } });
-    await Order.update({ paymentid: payment_id, status: "FAILED" });
-    await req.user.update({ order_id: order_id });
-    return res
-      .status(202)
-      .json({ success: false, message: "Transaction Failed" });
+
+    const promise1 = Order.update({
+      paymentid: payment_id,
+      status: "FAILED",
+    });
+    const promise2 = req.user.update({
+      order_id: order_id,
+    });
+
+    Promise.all([promise1, promise2])
+      .then(() => {
+        return res
+          .status(202)
+          .json({ success: false, message: "Transaction Failed" });
+      })
+      .catch((err) => {
+        throw new Error(err);
+      });
   } catch (err) {
     console.log(err);
     res.status(403).json({ error: err, message: "Something went wrong" });

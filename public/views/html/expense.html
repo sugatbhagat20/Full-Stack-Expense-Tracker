@@ -27,6 +27,9 @@
         <button id="buyPremium" type="button" class="btn btn-success">
           Buy Premium
         </button>
+        <button id="leaderBoard" type="button" class="btn btn-dark">
+          Show Leaderboard
+        </button>
         <hr />
         <br /><br />
         <label for="name">Expense Name</label>
@@ -43,18 +46,25 @@
           <option value="food">food</option>
         </select>
         <br /><br />
-        <input type="submit" class="btn btn-danger" value="Add Expense" />
+        <input type="submit" class="btn btn-secondary" value="Add Expense" />
 
         <br /><br />
       </form>
     </div>
     <div class="History" id="history">
-      <ol class="title" id="list">
+      <ol class="items" id="list">
         EXPENSE HISTORY
       </ol>
     </div>
 
+    <div class="leaderboard" id="leaderboard">
+      <ol class="board" id="boardList">
+        LEADERBOARD
+      </ol>
+    </div>
+
     <script src="../../js/expense.js"></script>
+    <script src="../../js/leaderboard.js"></script>
     <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
   </body>
 </html>
