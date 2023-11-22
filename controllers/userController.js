@@ -9,6 +9,12 @@ function generateAccessToken(id, email) {
   );
 }
 
+exports.isPremiumUser = (req, res, next) => {
+  if (req.user.isPremiumUser) {
+    return res.json({ isPremiumUser: true });
+  }
+};
+
 exports.addUser = (req, res, next) => {
   console.log(req.body);
   const name = req.body.name;
@@ -41,13 +47,11 @@ exports.logIn = (req, res, next) => {
       if (user) {
         bcrypt.compare(password, user.password, (err, result) => {
           if (result === true) {
-            return res
-              .status(200)
-              .json({
-                success: true,
-                message: "Login Successful!",
-                token: generateAccessToken(user.id, user.email),
-              });
+            return res.status(200).json({
+              success: true,
+              message: "Login Successful!",
+              token: generateAccessToken(user.id, user.email),
+            });
           } else {
             return res
               .status(401)

@@ -1,5 +1,5 @@
 var form = document.getElementById("form");
-
+var payment = document.getElementById("buyPremium");
 var list = document.getElementById("list");
 
 var nameItem = document.querySelector("#name");
@@ -7,10 +7,69 @@ var amountItem = document.querySelector("#amount");
 
 form.addEventListener("submit", addItem);
 list.addEventListener("click", del);
+payment.addEventListener("click", buyPremium);
 // list.addEventListener("click", editItem);
 window.addEventListener("DOMContentLoaded", () => {
   renderList();
 });
+
+async function buyPremium(e) {
+  const token = localStorage.getItem("token");
+  const res = await axios.get("http://localhost:4000/purchase/premium", {
+    headers: { Authorization: token },
+  });
+  //console.log(res);
+  var options = {
+    key: res.data.key_id, // Enter the Key ID generated from the Dashboard
+    order_id: res.data.order.id, // For one time payment
+    // This handler function will handle the success payment
+    handler: async function (response) {
+      console.log(response);
+      const res = await axios.post(
+        "http://localhost:4000/purchase/updateTransactionStatus",
+        {
+          order_id: options.order_id,
+          payment_id: response.razorpay_payment_id,
+        },
+        { headers: { Authorization: token } }
+      );
+
+      //console.log(res);
+      alert("Welcome to our Premium Membership");
+      localStorage.setItem("token", res.data.token);
+    },
+  };
+  const rzp1 = new Razorpay(options);
+  rzp1.on("payment.failed", async function (response) {
+    alert("failed");
+    console.log(response.error);
+    const res = await axios.post(
+      "http://localhost:4000/purchase/failed",
+      {
+        order_id: options.order_id,
+        payment_id: response.error.metadata.payment_id,
+      },
+      {
+        headers: {
+          Authorization: token,
+        },
+      }
+    );
+    console.log(res);
+  });
+  rzp1.open();
+  e.preventDefault();
+}
+
+async function isPremiumUser() {
+  const token = localStorage.getItem("token");
+  const res = await axios.get("http://localhost:4000/user/isPremiumUser", {
+    headers: { Authorization: token },
+  });
+  if (res.data.isPremiumUser) {
+    buyPremium.innerHTML = "Premium Member";
+  }
+}
 
 async function addItem(e) {
   e.preventDefault();
