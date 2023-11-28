@@ -1,7 +1,7 @@
 const users = require("../model/userModel");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-
+const sequelize = require("../utils/database");
 function generateAccessToken(id, email) {
   return jwt.sign(
     { userId: id, email: email },
@@ -68,4 +68,22 @@ exports.logIn = (req, res, next) => {
   {
     console.log(res);
   }
+};
+
+exports.getAllUsers = (req, res, next) => {
+  users
+    .findAll({
+      attributes: [
+        [sequelize.col("name"), "name"],
+        [sequelize.col("totalExpenses"), "totalExpenses"],
+      ],
+      order: [[sequelize.col("totalExpenses"), "DESC"]],
+    })
+    .then((users) => {
+      const result = users.map((user) => ({
+        name: user.getDataValue("name"),
+        totalExpenses: user.getDataValue("totalExpenses"),
+      }));
+      res.send(JSON.stringify(result));
+    });
 };

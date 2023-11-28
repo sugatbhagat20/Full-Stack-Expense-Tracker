@@ -1,7 +1,7 @@
 var form = document.getElementById("form");
 var payment = document.getElementById("buyPremium");
 var list = document.getElementById("list");
-
+//const leaderboardBtn = document.getElementById("leaderBoard");
 var nameItem = document.querySelector("#name");
 var amountItem = document.querySelector("#amount");
 
@@ -71,8 +71,8 @@ async function isPremiumUser() {
     payment.innerHTML = "Premium Member";
     payment.className = "btn btn-warning";
     //reportsLink.removeAttribute("onclick");
-    //leaderboardLink.removeAttribute("onclick");
-    //leaderboardLink.setAttribute("href", "/premium/getLeaderboardPage");
+    //leaderboardBtn.removeAttribute("onclick");
+    //leaderboardBtn.setAttribute("href", "/premium/getLeaderboardPage");
     payment.removeEventListener("click", buyPremium);
   }
 }

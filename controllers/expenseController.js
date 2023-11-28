@@ -1,10 +1,17 @@
 const expenses = require("../model/expenseModel");
-
+const users = require("../model/userModel");
 exports.addExpense = (req, res, next) => {
   console.log(req.body);
   const name = req.body.name;
   const amount = req.body.amount;
   const expense = req.body.expense;
+
+  users.update(
+    {
+      totalExpenses: req.user.totalExpenses + amount,
+    },
+    { where: { id: req.user.id } }
+  );
 
   expenses
     .create({
@@ -33,12 +40,22 @@ exports.getExpenses = (req, res, next) => {
 };
 
 exports.deleteExpense = (req, res, next) => {
-  const expenseId = req.params.id;
+  const id = req.params.id;
   expenses
-    .findByPk({ where: { id: expenseId, userId: req.user.id } })
+    .findByPk(id)
     .then((expense) => {
-      return expense.destroy();
+      users.update(
+        {
+          totalExpenses: req.user.totalExpenses - expense.amount,
+        },
+        { where: { id: req.user.id } }
+      );
     })
-    .then((result) => res.json(result))
+    .catch((err) => console.log(err));
+  expenses
+    .destroy({ where: { id: id, userId: req.user.id } })
+    .then((result) => {
+      res.redirect("/homePage");
+    })
     .catch((err) => console.log(err));
 };
