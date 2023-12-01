@@ -85,5 +85,8 @@ exports.getAllUsers = (req, res, next) => {
         totalExpenses: user.getDataValue("totalExpenses"),
       }));
       res.send(JSON.stringify(result));
+    })
+    .catch((err) => {
+      console.error(err);
     });
 };

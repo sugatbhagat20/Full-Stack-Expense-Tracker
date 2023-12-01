@@ -41,17 +41,14 @@ exports.getExpenses = (req, res, next) => {
 
 exports.deleteExpense = (req, res, next) => {
   const id = req.params.id;
-  expenses
-    .findByPk(id)
-    .then((expense) => {
-      users.update(
-        {
-          totalExpenses: req.user.totalExpenses - expense.amount,
-        },
-        { where: { id: req.user.id } }
-      );
-    })
-    .catch((err) => console.log(err));
+  expenses.findByPk(id).then((expense) => {
+    users.update(
+      {
+        totalExpenses: req.user.totalExpenses - expense.amount,
+      },
+      { where: { id: req.user.id } }
+    );
+  });
   expenses
     .destroy({ where: { id: id, userId: req.user.id } })
     .then((result) => {

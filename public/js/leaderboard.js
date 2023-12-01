@@ -4,7 +4,7 @@ var list2 = document.getElementById("boardList");
 leaderboardBtn.addEventListener("click", getLeaderboard);
 
 async function getLeaderboard() {
-  const res = await axios.get("http://localhost:4000/premium/getLeaderboard");
+  const res = await axios.get("http://localhost:4000/user/getAllUsers");
 
   res.data.forEach((user) => {
     var li = document.createElement("li");
@@ -12,7 +12,7 @@ async function getLeaderboard() {
     let span1 = document.createElement("span");
     span1.textContent = `Name: ${user.name} `;
     let span2 = document.createElement("span");
-    span2.textContent = `Total Expense: ${user.amount} `;
+    span2.textContent = `Total Expense: ${user.totalExpenses}`;
 
     li.appendChild(span1);
     li.appendChild(span2);
