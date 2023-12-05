@@ -9,5 +9,5 @@ router.get("/getAllUsers", userController.getAllUsers);
 // router.post("/login", userController.login);
 
 router.post("/logIn", userController.logIn);
-
+router.post("/sendMail", userController.sendMail);
 module.exports = router;

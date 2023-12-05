@@ -9,7 +9,7 @@ form.addEventListener("submit", addItem);
 list.addEventListener("click", del);
 payment.addEventListener("click", buyPremium);
 // list.addEventListener("click", editItem);
-window.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", () => {
   renderList();
 });
 document.addEventListener("DOMContentLoaded", isPremiumUser);

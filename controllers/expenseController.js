@@ -39,6 +39,7 @@ exports.addExpense = async (req, res, next) => {
         console.log(err);
       });
     await t.commit();
+    window.location.reload();
   } catch {
     async (err) => {
       await t.rollback();
@@ -59,6 +60,7 @@ exports.getExpenses = async (req, res, next) => {
 
 exports.deleteExpense = async (req, res, next) => {
   const id = req.params.id;
+
   try {
     const expense = await expenses.findByPk(id);
     await users.update(
@@ -68,7 +70,7 @@ exports.deleteExpense = async (req, res, next) => {
       { where: { id: req.user.id } }
     );
     await expenses.destroy({ where: { id: id, userId: req.user.id } });
-    res.redirect("/expense");
+    res.json(expenses);
   } catch (err) {
     console.log(err);
   }
