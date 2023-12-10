@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Reports page</title>
+  </head>
+
+  <body>
+          <h3>DAILY REPORTS</h3>
+        
+        <div>
+          <form>
+            
+              <label for="date" class="form-label"> Select Date</label>
+              <input type="date" class="form-control" id="date" />
+            
+            <button id="dateShowBtn" type="submit" >Show</button>
+          </form>
+        </div>
+     
+        <table id="table1">
+       
+          <thead>
+            <tr>
+              <th scope="col">Date</th>
+              <th scope="col">Category</th>
+              <th scope="col">Description</th>
+              <th scope="col">Amount</th>
+            </tr>
+          </thead>
+
+        
+
+          <tbody id="tbodyDailyId">
+           
+          </tbody>
+          <tfoot id="tfootDailyId">
+            
+          </tfoot>
+        </table>
+      </div>
+    </div>
+    
+          <h3>MONTHLY REPORTS</h3>
+       
+        <div>
+          <form>
+            
+              <label for="month" class="form-label">Select Month</label>
+              <input type="month" class="form-control" id="month" />
+            
+            <button id="monthShowBtn" type="submit" >Show</button>
+          </form>
+       
+      </div>
+
+      
+        <table
+          id="table2"
+          
+        >
+        
+
+          <thead>
+            <tr>
+              <th scope="col">Date</th>
+              <th scope="col">Category</th>
+              <th scope="col">Description</th>
+              <th scope="col">Amount</th>
+            </tr>
+          </thead>
+
+
+          <tbody id="tbodyMonthlyId">
+            
+          </tbody>
+          <tfoot id="tfootMonthlyId">
+            
+          </tfoot>
+        </table>
+    
+          <!-- <h3>YEARLY REPORTS</h3>
+ 
+        <div>
+          <form>
+           
+              <label for="year-input" class="form-label"></label>
+              <select id="year-input" name="year-input">
+                <option value="">Select year</option>
+                <option value="2014">2014</option>
+                <option value="2015">2015</option>
+                <option value="2016">2016</option>
+                <option value="2017">2017</option>
+                <option value="2018">2018</option>
+                <option value="2019">2019</option>
+                <option value="2020">2020</option>
+                <option value="2021">2021</option>
+                <option value="2022">2022</option>
+                <option value="2024">2023</option>
+                
+              </select>
+            
+            <button type="submit" >Show</button>
+          </form>
+        </div>
+      </div>
+
+     
+        <table >
+        
+
+          <thead>
+            <tr>
+              <th scope="col">Month</th>
+              <td></td>
+              <th scope="col">Amount</th>
+            </tr>
+          </thead>
+
+
+          <tbody id="tbodyId">
+            <tr class="trStyle">
+              <td>January</td>
+              <td></td>
+              <td>14</td>
+            </tr>
+          </tbody>
+          <tfoot>
+            <tr class="trStyle">
+              <td></td>
+              <td></td>
+              <td></td>
+             
+              
+              <td id="yearlyTotal">Total</td>
+              <td id="yearlyTotalAmount">9000</td>
+            </tr>
+          </tfoot> -->
+        <!-- </table> -->
+     
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.6.2/axios.min.js" integrity="sha512-b94Z6431JyXY14iSXwgzeZurHHRNkLt9d6bAHt7BZT38eqV+GyngIi/tVye4jBKPYQ2lBdRs0glww4fmpuLRwA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+        <script src="../../js/reports.js"></script>
+  </body>
+</html>

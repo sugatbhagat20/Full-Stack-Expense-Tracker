@@ -108,29 +108,3 @@ exports.getAllUsers = async (req, res, next) => {
     console.log(error);
   }
 };
-
-exports.sendMail = async (req, res, next) => {
-  try {
-    const client = Sib.ApiClient.instance;
-    const apiKey = client.authentications["api-key"];
-    apiKey.apiKey = process.env.RESET_PASSWORD_API_KEY;
-    const transEmailApi = new Sib.TransactionalEmailsApi();
-    const sender = {
-      email: "sugat.bhagat20@gmail.com",
-      name: "Sugat",
-    };
-    const receivers = [
-      {
-        email: req.body.email,
-      },
-    ];
-    await transEmailApi.sendTransacEmail({
-      sender,
-      To: receivers,
-      subject: "Expense Tracker Reset Password",
-      textContent: "Link Below",
-    });
-  } catch (error) {
-    console.log(error);
-  }
-};

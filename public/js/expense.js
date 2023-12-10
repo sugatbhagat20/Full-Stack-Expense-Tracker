@@ -8,6 +8,9 @@ var amountItem = document.querySelector("#amount");
 form.addEventListener("submit", addItem);
 list.addEventListener("click", del);
 payment.addEventListener("click", buyPremium);
+const reportsLink = document.getElementById("reportsLink");
+const leaderboardBtn = document.getElementById("leaderBoard");
+
 // list.addEventListener("click", editItem);
 document.addEventListener("DOMContentLoaded", () => {
   renderList();
@@ -70,9 +73,10 @@ async function isPremiumUser() {
   if (res.data.isPremiumUser) {
     payment.innerHTML = "Premium Member";
     payment.className = "btn btn-warning";
-    //reportsLink.removeAttribute("onclick");
-    //leaderboardBtn.removeAttribute("onclick");
-    //leaderboardBtn.setAttribute("href", "/premium/getLeaderboardPage");
+    reportsLink.removeAttribute("onclick");
+    leaderboardBtn.removeAttribute("onclick");
+    leaderboardBtn.setAttribute("href", "/premium/getLeaderboardPage");
+    reportsLink.setAttribute("href", "/reports/getReportsPage");
     payment.removeEventListener("click", buyPremium);
   }
 }
@@ -103,6 +107,7 @@ async function addItem(e) {
     //li.dataset.name = input1;
     //li.dataset.amount = input2;
     //deleteBtn.id = `${expense.id}`;
+    console.log(expense);
     deleteBtn.appendChild(document.createTextNode("Delete"));
     //editBtn.appendChild(document.createTextNode("Edit"));
     let span1 = document.createElement("span");

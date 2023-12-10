@@ -7,9 +7,15 @@ const userRoute = require("./routes/userRoute");
 const expenseRoute = require("./routes/expenseRoute");
 const purchaseRoute = require("./routes/purchaseRoute");
 const leaderboardRouter = require("./routes/leaderboardRouter");
+//const reportsRouter = require("./routes/reportsRouter");
+const resetPasswordRouter = require("./routes/resetPasswordRouter");
+const reportsRouter = require("./routes/reportsRoute");
+
 const user = require("./model/userModel");
 const expense = require("./model/expenseModel");
+
 const order = require("./model/orderModel");
+const ResetPassword = require("./model/resetPasswordModel");
 app.use(cors());
 
 const dotenv = require("dotenv");
@@ -22,11 +28,18 @@ app.use("/user", userRoute);
 app.use("/expense", expenseRoute);
 app.use("/purchase", purchaseRoute);
 app.use("/premium", leaderboardRouter);
+app.use("/password", resetPasswordRouter);
+app.use("/reports", reportsRouter);
+//app.use("/reports", reportsRouter);
+
 user.hasMany(expense);
 expense.belongsTo(user);
 
 user.hasMany(order);
 order.belongsTo(user);
+
+ResetPassword.belongsTo(user);
+user.hasMany(ResetPassword);
 
 sequelize
   .sync()
