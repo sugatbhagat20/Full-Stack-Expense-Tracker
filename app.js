@@ -29,7 +29,6 @@ app.use("/expense", expenseRoute);
 app.use("/purchase", purchaseRoute);
 app.use("/premium", leaderboardRouter);
 app.use("/password", resetPasswordRouter);
-app.use("/reports", reportsRouter);
 //app.use("/reports", reportsRouter);
 
 user.hasMany(expense);

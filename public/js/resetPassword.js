@@ -9,11 +9,12 @@ async function updatePassword() {
         password: newPassword,
       }
     );
+    console.log(newPassword);
     alert(res.data.message);
     window.location.href = "/";
   } catch (error) {
     console.log(error);
-    alert(error.response.data.message);
+    //alert(error.response.data.message);
     window.location.reload();
   }
 }
