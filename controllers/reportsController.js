@@ -6,7 +6,7 @@ exports.dailyReports = async (req, res, next) => {
     const date = req.body.date;
     console.log(date);
     const expenses = await Expense.findAll({
-      where: { date: date, userId: req.user.id },
+      where: { createdAt: date, userId: req.user.id },
     });
     return res.send(expenses);
   } catch (error) {
@@ -14,22 +14,22 @@ exports.dailyReports = async (req, res, next) => {
   }
 };
 
-// exports.monthlyReports = async (req, res, next) => {
-//   try {
-//     const month = req.body.month;
+exports.monthlyReports = async (req, res, next) => {
+  try {
+    const month = req.body.month;
 
-//     const expenses = await Expense.findAll({
-//       where: {
-//         date: {
-//           [sequelize.like]: `%-${month}-%`,
-//         },
-//         userId: req.user.id,
-//       },
-//       raw: true,
-//     });
+    const expenses = await Expense.findAll({
+      where: {
+        createdAt: {
+          [sequelize.like]: `%-${month}-%`,
+        },
+        userId: req.user.id,
+      },
+      raw: true,
+    });
 
-//     return res.send(expenses);
-//   } catch (error) {
-//     console.log(error);
-//   }
-// };
+    return res.send(expenses);
+  } catch (error) {
+    console.log(error);
+  }
+};

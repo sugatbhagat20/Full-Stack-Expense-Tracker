@@ -13,11 +13,9 @@ async function getDailyReport(e) {
     e.preventDefault();
     const token = localStorage.getItem("token");
     const date = new Date(dateInput.value);
-    const formattedDate = `${date.getDate().toString().padStart(2, "0")}-${(
-      date.getMonth() + 1
-    )
+    const formattedDate = `${date.getFullYear()}-${(date.getMonth() + 1)
       .toString()
-      .padStart(2, "0")}-${date.getFullYear()}`;
+      .padStart(2, "0")}-${date.getDate().toString().padStart(2, "0")}`;
     console.log(date);
     console.log(formattedDate);
     let totalAmount = 0;
@@ -38,16 +36,16 @@ async function getDailyReport(e) {
       const tr = document.createElement("tr");
       tr.setAttribute("class", "trStyle");
       tbodyDaily.appendChild(tr);
-
+      console.log(expense);
       const th = document.createElement("th");
       th.setAttribute("scope", "row");
-      th.appendChild(document.createTextNode(expense.date));
+      th.appendChild(document.createTextNode(expense.createdAt));
 
       const td1 = document.createElement("td");
-      td1.appendChild(document.createTextNode(expense.category));
+      td1.appendChild(document.createTextNode(expense.expense));
 
       const td2 = document.createElement("td");
-      td2.appendChild(document.createTextNode(expense.description));
+      td2.appendChild(document.createTextNode(expense.name));
 
       const td3 = document.createElement("td");
       td3.appendChild(document.createTextNode(expense.amount));
@@ -81,75 +79,75 @@ async function getDailyReport(e) {
   }
 }
 
-// async function getMonthlyReport(e) {
-//   try {
-//     e.preventDefault();
-//     const token = localStorage.getItem("token");
-//     const month = new Date(monthInput.value);
-//     const formattedMonth = `${(month.getMonth() + 1)
-//       .toString()
-//       .padStart(2, "0")}`;
-//     console.log(formattedMonth);
-//     let totalAmount = 0;
-//     const res = await axios.post(
-//       "http://localhost:4000/reports/monthlyReports",
-//       {
-//         month: formattedMonth,
-//       },
-//       { headers: { Authorization: token } }
-//     );
+async function getMonthlyReport(e) {
+  try {
+    e.preventDefault();
+    const token = localStorage.getItem("token");
+    const month = new Date(monthInput.value);
+    const formattedMonth = `${(month.getMonth() + 1)
+      .toString()
+      .padStart(2, "0")}`;
+    console.log(formattedMonth);
+    let totalAmount = 0;
+    const res = await axios.post(
+      "http://localhost:4000/reports/monthlyReports",
+      {
+        month: formattedMonth,
+      },
+      { headers: { Authorization: token } }
+    );
 
-//     tbodyMonthly.innerHTML = "";
-//     tfootMonthly.innerHTML = "";
+    tbodyMonthly.innerHTML = "";
+    tfootMonthly.innerHTML = "";
 
-//     res.data.forEach((expense) => {
-//       totalAmount += expense.amount;
+    res.data.forEach((expense) => {
+      totalAmount += expense.amount;
 
-//       const tr = document.createElement("tr");
-//       tr.setAttribute("class", "trStyle");
-//       tbodyMonthly.appendChild(tr);
+      const tr = document.createElement("tr");
+      tr.setAttribute("class", "trStyle");
+      tbodyMonthly.appendChild(tr);
 
-//       const th = document.createElement("th");
-//       th.setAttribute("scope", "row");
-//       th.appendChild(document.createTextNode(expense.date));
+      const th = document.createElement("th");
+      th.setAttribute("scope", "row");
+      th.appendChild(document.createTextNode(expense.createdAt));
 
-//       const td1 = document.createElement("td");
-//       td1.appendChild(document.createTextNode(expense.category));
+      const td1 = document.createElement("td");
+      td1.appendChild(document.createTextNode(expense.expense));
 
-//       const td2 = document.createElement("td");
-//       td2.appendChild(document.createTextNode(expense.description));
+      const td2 = document.createElement("td");
+      td2.appendChild(document.createTextNode(expense.name));
 
-//       const td3 = document.createElement("td");
-//       td3.appendChild(document.createTextNode(expense.amount));
+      const td3 = document.createElement("td");
+      td3.appendChild(document.createTextNode(expense.amount));
 
-//       tr.appendChild(th);
-//       tr.appendChild(td1);
-//       tr.appendChild(td2);
-//       tr.appendChild(td3);
-//     });
+      tr.appendChild(th);
+      tr.appendChild(td1);
+      tr.appendChild(td2);
+      tr.appendChild(td3);
+    });
 
-//     const tr = document.createElement("tr");
-//     tr.setAttribute("class", "trStyle");
-//     tfootMonthly.appendChild(tr);
+    const tr = document.createElement("tr");
+    tr.setAttribute("class", "trStyle");
+    tfootMonthly.appendChild(tr);
 
-//     const td1 = document.createElement("td");
-//     const td2 = document.createElement("td");
-//     const td3 = document.createElement("td");
-//     const td4 = document.createElement("td");
+    const td1 = document.createElement("td");
+    const td2 = document.createElement("td");
+    const td3 = document.createElement("td");
+    const td4 = document.createElement("td");
 
-//     td3.setAttribute("id", "monthlyTotal");
-//     td4.setAttribute("id", "monthlyTotalAmount");
-//     td3.appendChild(document.createTextNode("Total"));
-//     td4.appendChild(document.createTextNode(totalAmount));
+    td3.setAttribute("id", "monthlyTotal");
+    td4.setAttribute("id", "monthlyTotalAmount");
+    td3.appendChild(document.createTextNode("Total"));
+    td4.appendChild(document.createTextNode(totalAmount));
 
-//     tr.appendChild(td1);
-//     tr.appendChild(td2);
-//     tr.appendChild(td3);
-//     tr.appendChild(td4);
-//   } catch (error) {
-//     console.log(error);
-//   }
-// }
+    tr.appendChild(td1);
+    tr.appendChild(td2);
+    tr.appendChild(td3);
+    tr.appendChild(td4);
+  } catch (error) {
+    console.log(error);
+  }
+}
 
 dateShowBtn.addEventListener("click", getDailyReport);
-//monthShowBtn.addEventListener("click", getMonthlyReport);
+monthShowBtn.addEventListener("click", getMonthlyReport);

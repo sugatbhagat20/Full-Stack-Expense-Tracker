@@ -8,10 +8,10 @@ router.post(
   userAuthentication,
   reportsController.dailyReports
 );
-// router.post(
-//   "/monthlyReports",
-//   userAuthentication,
-//   reportsController.monthlyReports
-// );
+router.post(
+  "/monthlyReports",
+  userAuthentication,
+  reportsController.monthlyReports
+);
 
 module.exports = router;

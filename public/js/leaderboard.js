@@ -1,4 +1,4 @@
-const leaderboardBtn = document.getElementById("leaderBoard");
+var leaderboardBtn = document.getElementById("leaderBoard");
 var list2 = document.getElementById("boardList");
 
 leaderboardBtn.addEventListener("click", getLeaderboard);
