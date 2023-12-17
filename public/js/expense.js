@@ -4,7 +4,7 @@ var list = document.getElementById("list");
 //const leaderboardBtn = document.getElementById("leaderBoard");
 var nameItem = document.querySelector("#name");
 var amountItem = document.querySelector("#amount");
-
+var download = document.getElementById("downloadFile");
 form.addEventListener("submit", addItem);
 list.addEventListener("click", del);
 payment.addEventListener("click", buyPremium);
@@ -16,6 +16,28 @@ document.addEventListener("DOMContentLoaded", () => {
   renderList();
 });
 document.addEventListener("DOMContentLoaded", isPremiumUser);
+
+download.addEventListener("click", downloadFile);
+
+async function downloadFile(e) {
+  try {
+    console.log("click");
+    const token = localStorage.getItem("token");
+    const res = await axios.get("http://localhost:4000/user/download", {
+      headers: { Authorization: token },
+    });
+    console.log(res);
+    // const a = document.createElement("a");
+    // a.href = res.data.fileUrl;
+    // a.download = "myexpense.csv";
+    window.location.href = res.data.fileUrl.Location;
+
+    // a.click();
+  } catch (e) {
+    console.log(e);
+  }
+}
+
 async function buyPremium(e) {
   const token = localStorage.getItem("token");
   const res = await axios.get("http://localhost:4000/purchase/premium", {
@@ -166,14 +188,11 @@ async function del(e) {
 async function renderList(e) {
   try {
     const token = localStorage.getItem("token");
-    const expenses = await axios.get(
-      "http://localhost:4000/expense/expenses/1",
-      {
-        headers: { Authorization: token },
-      }
-    );
+    const expenses = await axios.get("http://localhost:4000/expense/expenses", {
+      headers: { Authorization: token },
+    });
 
-    expenses.data.expenses.forEach((expense) => {
+    expenses.data.forEach((expense) => {
       var li = document.createElement("li");
       var deleteBtn = document.createElement("button");
       //var editBtn = document.createElement("button");
@@ -198,60 +217,60 @@ async function renderList(e) {
 
       list.appendChild(li);
     });
-    const ul = document.getElementById("paginationUL");
-    for (let i = 1; i <= res.data.totalPages; i++) {
-      const li = document.createElement("li");
-      const a = document.createElement("a");
-      li.setAttribute("class", "page-item");
-      a.setAttribute("class", "page-link");
-      a.setAttribute("href", "#");
-      a.appendChild(document.createTextNode(i));
-      li.appendChild(a);
-      ul.appendChild(li);
-      a.addEventListener("click", paginationBtn);
-    }
+    // const ul = document.getElementById("paginationUL");
+    // for (let i = 1; i <= res.data.totalPages; i++) {
+    //   const li = document.createElement("li");
+    //   const a = document.createElement("a");
+    //   li.setAttribute("class", "page-item");
+    //   a.setAttribute("class", "page-link");
+    //   a.setAttribute("href", "#");
+    //   a.appendChild(document.createTextNode(i));
+    //   li.appendChild(a);
+    //   ul.appendChild(li);
+    //   a.addEventListener("click", paginationBtn);
+    //}
   } catch (e) {
     console.log(e);
   }
 }
 
-async function paginationBtn(e) {
-  try {
-    const pageNo = e.target.textContent;
-    const token = localStorage.getItem("token");
-    const res = await axios.get(
-      `http://localhost:4000/expense/getAllExpenses/${pageNo}`,
-      { headers: { Authorization: token } }
-    );
+// async function paginationBtn(e) {
+//   try {
+//     const pageNo = e.target.textContent;
+//     const token = localStorage.getItem("token");
+//     const res = await axios.get(
+//       `http://localhost:4000/expense/getAllExpenses/${pageNo}`,
+//       { headers: { Authorization: token } }
+//     );
 
-    //table.innerHTML = "";
+//     //table.innerHTML = "";
 
-    expenses.data.expenses.forEach((expense) => {
-      var li = document.createElement("li");
-      var deleteBtn = document.createElement("button");
-      //var editBtn = document.createElement("button");
+//     expenses.data.expenses.forEach((expense) => {
+//       var li = document.createElement("li");
+//       var deleteBtn = document.createElement("button");
+//       //var editBtn = document.createElement("button");
 
-      //give classname to the li element
-      li.className = "items";
-      deleteBtn.className = "delete btn btn-dark";
+//       //give classname to the li element
+//       li.className = "items";
+//       deleteBtn.className = "delete btn btn-dark";
 
-      deleteBtn.id = `${expense.id}`;
-      deleteBtn.appendChild(document.createTextNode("Delete"));
-      //editBtn.appendChild(document.createTextNode("Edit"));
-      let span1 = document.createElement("span");
-      span1.textContent = `${expense.name} `;
-      let span2 = document.createElement("span");
-      span2.textContent = `${expense.amount} `;
-      let span3 = document.createElement("span");
-      span3.textContent = `${expense.expense} `;
-      li.appendChild(span1);
-      li.appendChild(span2);
-      li.appendChild(span3);
-      li.appendChild(deleteBtn);
+//       deleteBtn.id = `${expense.id}`;
+//       deleteBtn.appendChild(document.createTextNode("Delete"));
+//       //editBtn.appendChild(document.createTextNode("Edit"));
+//       let span1 = document.createElement("span");
+//       span1.textContent = `${expense.name} `;
+//       let span2 = document.createElement("span");
+//       span2.textContent = `${expense.amount} `;
+//       let span3 = document.createElement("span");
+//       span3.textContent = `${expense.expense} `;
+//       li.appendChild(span1);
+//       li.appendChild(span2);
+//       li.appendChild(span3);
+//       li.appendChild(deleteBtn);
 
-      list.appendChild(li);
-    });
-  } catch (error) {
-    console.log(error);
-  }
-}
+//       list.appendChild(li);
+//     });
+//   } catch (error) {
+//     console.log(error);
+//   }
+// }

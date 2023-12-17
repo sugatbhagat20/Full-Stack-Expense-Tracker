@@ -9,5 +9,5 @@ router.get("/getAllUsers", userController.getAllUsers);
 // router.post("/login", userController.login);
 
 router.post("/logIn", userController.logIn);
-
+router.get("/download", userAuthentication, userController.downloadExpenses);
 module.exports = router;

@@ -2,6 +2,9 @@ const users = require("../model/userModel");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const Sib = require("sib-api-v3-sdk");
+//require('dotenv').config()
+
+const AWS = require("aws-sdk");
 require("dotenv").config();
 const sequelize = require("../utils/database");
 function generateAccessToken(id, email) {
@@ -108,3 +111,40 @@ exports.getAllUsers = async (req, res, next) => {
     console.log(error);
   }
 };
+
+exports.downloadExpenses = async (req, res) => {
+  try {
+    const expenses = await req.user.getExpenses();
+    const expensesToString = JSON.stringify(expenses);
+    const fileName = `expense${req.user.id}/${new Date()}.txt`;
+    const fileUrl = await uploadToS3(expensesToString, fileName);
+    return res.json({ fileUrl: fileUrl, success: true });
+  } catch (e) {
+    console.log(e);
+    return res
+      .status(500)
+      .json({ success: false, msg: "Internal server error" });
+  }
+};
+
+function uploadToS3(data, fileName) {
+  const s3Bucket = new AWS.S3({
+    accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+    secretAccessKey: process.env.AWS_SECRET_KEY,
+  });
+  const params = {
+    Bucket: process.env.AWS_BUCKET_NAME,
+    Key: fileName,
+    Body: data,
+    ACL: "public-read",
+  };
+
+  return new Promise((resolve, reject) => {
+    s3Bucket.upload(params, function (err, res) {
+      if (err) reject(error);
+      else {
+        resolve(res);
+      }
+    });
+  });
+}
