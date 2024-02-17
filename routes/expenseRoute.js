@@ -4,12 +4,12 @@ const expenseController = require("../controllers/expenseController");
 const userAuthentication = require("../middleware/auth");
 //router.use(express.static("public"));
 //router.get("/", expenseController.getHomePage);
-router.get("/expenses", userAuthentication, expenseController.getExpenses);
 // router.get(
-//   "/expenses/:page",
+//   "/getAllExpenses",
 //   userAuthentication,
-//   expenseController.getAllExpensesforPagination
+//   expenseController.getAllExpenses
 // );
+
 router.post("/addExpense", userAuthentication, expenseController.addExpense);
 //router.get("/download", userAuthentication, expenseController.downloadExpense);
 router.delete(
@@ -17,4 +17,7 @@ router.delete(
   userAuthentication,
   expenseController.deleteExpense
 );
+
+router.get("/getExpenses", userAuthentication, expenseController.getExpenses);
+
 module.exports = router;

@@ -48,14 +48,24 @@ exports.addExpense = async (req, res, next) => {
   }
 };
 
-exports.getExpenses = async (req, res, next) => {
-  try {
-    const expense = await expenses.findAll({ where: { userId: req.user.id } });
-    await res.json(expense);
-  } catch (err) {
-    console.log(err);
-  }
-};
+// exports.getExpenses = async (req, res) => {
+//   try {
+//     const page = req.query.page || 1;
+//     console.log(req.user);
+//     const exp = req.user.getExpenses({
+//       offset: (page - 1) * 2,
+//       limit: 2,
+//     });
+//     const totalExp = req.user.countExpenses();
+//     const [expenses, totalExpenses] = await Promise.all([exp, totalExp]);
+//     return res.json({ expenses, totalExpenses });
+//   } catch (e) {
+//     console.log(e);
+//     return res
+//       .status(500)
+//       .json({ success: false, msg: "Internal server error" });
+//   }
+// };
 //
 
 exports.deleteExpense = async (req, res, next) => {
@@ -76,22 +86,25 @@ exports.deleteExpense = async (req, res, next) => {
   }
 };
 
-// exports.getAllExpensesforPagination = async (req, res, next) => {
+// exports.getAllExpenses = async (req, res, next) => {
 //   try {
-//     const pageNo = req.params.page;
-//     const limit = 10;
-//     const offset = (pageNo - 1) * limit;
-//     const totalExpenses = await expenses.count({
-//       where: { userId: req.user.id },
-//     });
-//     const totalPages = Math.ceil(totalExpenses / limit);
-//     const expenses = await expenses.findAll({
-//       where: { userId: req.user.id },
-//       offset: offset,
-//       limit: limit,
-//     });
-//     res.json({ expenses: expenses, totalPages: totalPages });
+//     const expense = await expenses.findAll({ where: { userId: req.user.id } });
+//     await res.json(expense);
 //   } catch (err) {
 //     console.log(err);
 //   }
 // };
+
+exports.getExpenses = async (req, res) => {
+  try {
+    const page = req.query.page || 1;
+    const perPage = req.query.perPage || 5;
+    const offset = (page - 1) * perPage;
+
+    const records = await expenses.findAll({ limit: perPage, offset: offset });
+    res.json(records);
+  } catch (error) {
+    console.error("Error fetching records:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+};

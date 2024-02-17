@@ -57,6 +57,7 @@
       <ol class="items" id="list">
         EXPENSE HISTORY
       </ol>
+      <div id="records"></div>
     </div>
 
     <div class="leaderboard" id="leaderboard">
@@ -64,7 +65,17 @@
         LEADERBOARD
       </ol>
     </div>
-    <ul id="paginationUL" class="pagination"></ul>
+    <div class="page">
+      <select id="rows">
+        <option value="2">2</option>
+        <option value="5">5</option>
+        <option value="10">10</option>
+        <option value="50">50</option>
+      </select>
+      <button id="prev" type="button">prev</button>
+      <button id="next" type="button">next</button>
+    </div>
+
     <script src="../../js/expense.js"></script>
     <script src="../../js/leaderboard.js"></script>
     <script src="https://checkout.razorpay.com/v1/checkout.js"></script>

@@ -12,9 +12,9 @@ const reportsLink = document.getElementById("reportsLink");
 var leaderboardBtn = document.getElementById("leaderBoard");
 
 // list.addEventListener("click", editItem);
-document.addEventListener("DOMContentLoaded", () => {
-  renderList();
-});
+// document.addEventListener("DOMContentLoaded", () => {
+//   renderList();
+// });
 document.addEventListener("DOMContentLoaded", isPremiumUser);
 
 download.addEventListener("click", downloadFile);
@@ -185,67 +185,17 @@ async function del(e) {
 //   }
 // }
 
-async function renderList(e) {
-  try {
-    const token = localStorage.getItem("token");
-    const expenses = await axios.get("http://localhost:4000/expense/expenses", {
-      headers: { Authorization: token },
-    });
-
-    expenses.data.forEach((expense) => {
-      var li = document.createElement("li");
-      var deleteBtn = document.createElement("button");
-      //var editBtn = document.createElement("button");
-
-      //give classname to the li element
-      li.className = "items";
-      deleteBtn.className = "delete btn btn-dark";
-
-      deleteBtn.id = `${expense.id}`;
-      deleteBtn.appendChild(document.createTextNode("Delete"));
-      //editBtn.appendChild(document.createTextNode("Edit"));
-      let span1 = document.createElement("span");
-      span1.textContent = `${expense.name} `;
-      let span2 = document.createElement("span");
-      span2.textContent = `${expense.amount} `;
-      let span3 = document.createElement("span");
-      span3.textContent = `${expense.expense} `;
-      li.appendChild(span1);
-      li.appendChild(span2);
-      li.appendChild(span3);
-      li.appendChild(deleteBtn);
-
-      list.appendChild(li);
-    });
-    // const ul = document.getElementById("paginationUL");
-    // for (let i = 1; i <= res.data.totalPages; i++) {
-    //   const li = document.createElement("li");
-    //   const a = document.createElement("a");
-    //   li.setAttribute("class", "page-item");
-    //   a.setAttribute("class", "page-link");
-    //   a.setAttribute("href", "#");
-    //   a.appendChild(document.createTextNode(i));
-    //   li.appendChild(a);
-    //   ul.appendChild(li);
-    //   a.addEventListener("click", paginationBtn);
-    //}
-  } catch (e) {
-    console.log(e);
-  }
-}
-
-// async function paginationBtn(e) {
+// async function renderList(e) {
 //   try {
-//     const pageNo = e.target.textContent;
 //     const token = localStorage.getItem("token");
-//     const res = await axios.get(
-//       `http://localhost:4000/expense/getAllExpenses/${pageNo}`,
-//       { headers: { Authorization: token } }
+//     const expenses = await axios.get(
+//       "http://localhost:4000/expense/getAllExpenses",
+//       {
+//         headers: { Authorization: token },
+//       }
 //     );
 
-//     //table.innerHTML = "";
-
-//     expenses.data.expenses.forEach((expense) => {
+//     expenses.data.forEach((expense) => {
 //       var li = document.createElement("li");
 //       var deleteBtn = document.createElement("button");
 //       //var editBtn = document.createElement("button");
@@ -270,7 +220,142 @@ async function renderList(e) {
 
 //       list.appendChild(li);
 //     });
-//   } catch (error) {
-//     console.log(error);
+//   } catch (e) {
+//     console.log(e);
 //   }
 // }
+
+// document.querySelector(".page").addEventListener("click", async (e) => {
+//   try {
+//     if (e.target.classList.contains("page-btn")) {
+//       console.log("clicked");
+//       console.log(e.target.id == "next");
+//       const token = localStorage.getItem("token");
+//       const page = e.target.value;
+//       const result = await axios.get(
+//         `http://localhost:4000/expense/getExpenses?page=${page}`,
+//         { headers: { Authorization: token } }
+//       );
+//       console.log(result);
+//       let users = result.data.expenses;
+
+//       users.forEach((expense) => {
+//         var li = document.createElement("li");
+//         var deleteBtn = document.createElement("button");
+//         //var editBtn = document.createElement("button");
+
+//         //give classname to the li element
+//         li.className = "items";
+//         deleteBtn.className = "delete btn btn-dark";
+
+//         deleteBtn.id = `${expense.id}`;
+//         deleteBtn.appendChild(document.createTextNode("Delete"));
+//         //editBtn.appendChild(document.createTextNode("Edit"));
+//         let span1 = document.createElement("span");
+//         span1.textContent = `${expense.name} `;
+//         let span2 = document.createElement("span");
+//         span2.textContent = `${expense.amount} `;
+//         let span3 = document.createElement("span");
+//         span3.textContent = `${expense.expense} `;
+//         li.appendChild(span1);
+//         li.appendChild(span2);
+//         li.appendChild(span3);
+//         li.appendChild(deleteBtn);
+
+//         list.appendChild(li);
+//       });
+//       let prev = document.getElementById("prev");
+//       let curr = document.getElementById("curr");
+//       let next = document.getElementById("next");
+
+//       if (e.target.id == "next") {
+//         prev.classList.remove("hide");
+//         prev.textContent = curr.textContent;
+//         prev.value = curr.value;
+
+//         curr.textContent = next.textContent;
+//         curr.value = next.value;
+
+//         if (result.data.totalExpenses > 2 * page) {
+//           next.value = +page + 1;
+//           next.textContent = +page + 1;
+//         } else {
+//           next.classList.add("hide");
+//         }
+//       } else if (e.target.id == "prev") {
+//         if (page > 1) {
+//           next.classList.remove("hide");
+//           prev.textContent = page - 1;
+//           prev.value = page - 1;
+
+//           curr.textContent = page;
+//           curr.value = page;
+
+//           next.textContent = +page + 1;
+//           next.value = +page + 1;
+//         } else {
+//           prev.classList.add("hide");
+//           curr.textContent = 1;
+//           curr.value = 1;
+//           if (result.data.totalExpenses > 2 * page) {
+//             next.value = 2;
+//             next.textContent = 2;
+//           } else {
+//             next.classList.add("hide");
+//           }
+//         }
+//       }
+//     }
+//   } catch (e) {
+//     console.log(e);
+//   }
+// });
+
+document.addEventListener("DOMContentLoaded", () => {
+  const recordsPerPageSelect = document.getElementById("rows");
+  const previousBtn = document.getElementById("prev");
+  const nextBtn = document.getElementById("next");
+  const recordsDiv = document.getElementById("records");
+  const token = localStorage.getItem("token");
+
+  let currentPage = 1;
+  let recordsPerPage = parseInt(recordsPerPageSelect.value);
+  console.log(recordsPerPage);
+  // Function to fetch records from backend
+  async function fetchRecords(page, perPage) {
+    await axios
+      .get(
+        `http://localhost:4000/expense/getExpenses?page=${page}&perPage=${perPage}`,
+        { headers: { Authorization: token } }
+      )
+      .then((response) => response.json())
+      .then((data) => {
+        // Display fetched records
+        recordsDiv.innerHTML = data
+          .map((record) => `<div>${record.name}</div>`)
+          .join("");
+      })
+      .catch((error) => console.error("Error fetching records:", error));
+  }
+
+  // Initial fetch
+  fetchRecords(currentPage, recordsPerPage);
+
+  // Event listeners for dropdown and buttons
+  recordsPerPageSelect.addEventListener("change", () => {
+    recordsPerPage = parseInt(recordsPerPageSelect.value);
+    fetchRecords(currentPage, recordsPerPage);
+  });
+
+  previousBtn.addEventListener("click", () => {
+    if (currentPage > 1) {
+      currentPage--;
+      fetchRecords(currentPage, recordsPerPage);
+    }
+  });
+
+  nextBtn.addEventListener("click", () => {
+    currentPage++;
+    fetchRecords(currentPage, recordsPerPage);
+  });
+});
