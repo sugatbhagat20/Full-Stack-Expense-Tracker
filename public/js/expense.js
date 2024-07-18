@@ -98,7 +98,7 @@ async function isPremiumUser() {
     reportsLink.removeAttribute("onclick");
     leaderboardBtn.removeAttribute("onclick");
     leaderboardBtn.setAttribute("href", "/premium/getLeaderboardPage");
-    reportsLink.setAttribute("href", "/reports/getReportsPage");
+    //reportsLink.setAttribute("href", "/reports/getReportsPage");
     payment.removeEventListener("click", buyPremium);
   }
 }
@@ -328,11 +328,16 @@ document.addEventListener("DOMContentLoaded", () => {
         `http://localhost:4000/expense/getExpenses?page=${page}&perPage=${perPage}`,
         { headers: { Authorization: token } }
       )
-      .then((response) => response.json())
-      .then((data) => {
+
+      .then((response) => {
         // Display fetched records
-        recordsDiv.innerHTML = data
-          .map((record) => `<div>${record.name}</div>`)
+        recordsDiv.innerHTML = response.data
+          .map(
+            (record) =>
+              `<div>${
+                record.name + " " + record.amount + " " + record.expense
+              }</div>`
+          )
           .join("");
       })
       .catch((error) => console.error("Error fetching records:", error));

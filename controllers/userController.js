@@ -7,13 +7,11 @@ const Sib = require("sib-api-v3-sdk");
 const AWS = require("aws-sdk");
 require("dotenv").config();
 const sequelize = require("../utils/database");
-function generateAccessToken(id, email) {
-  return jwt.sign(
-    { userId: id, email: email },
-    "kjhsgdfiuiew889kbasgdfskjabsdfjlabsbdljhsd"
-  );
-}
 
+function generateAccessToken(id, email) {
+  return jwt.sign({ userId: id, email: email }, process.env.TOKEN);
+}
+console.log(process.env.TOKEN);
 exports.isPremiumUser = async (req, res, next) => {
   try {
     if (req.user.isPremiumUser) {

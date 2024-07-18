@@ -100,8 +100,14 @@ exports.getExpenses = async (req, res) => {
     const page = req.query.page || 1;
     const perPage = req.query.perPage || 5;
     const offset = (page - 1) * perPage;
+    const userId = req.user.id;
 
-    const records = await expenses.findAll({ limit: perPage, offset: offset });
+    const records = await expenses.findAll({
+      where: { userId: userId },
+      limit: Number(perPage),
+      offset: Number(offset),
+    });
+
     res.json(records);
   } catch (error) {
     console.error("Error fetching records:", error);
