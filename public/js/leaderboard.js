@@ -4,7 +4,7 @@ var list2 = document.getElementById("boardList");
 leaderboardBtn.addEventListener("click", getLeaderboard);
 
 async function getLeaderboard() {
-  const res = await axios.get("http://localhost:4000/user/getAllUsers");
+  const res = await axios.get("http://43.204.220.240:4000/user/getAllUsers");
 
   res.data.forEach((user) => {
     var li = document.createElement("li");

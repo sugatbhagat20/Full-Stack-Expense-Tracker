@@ -46,6 +46,13 @@ order.belongsTo(user);
 ResetPassword.belongsTo(user);
 user.hasMany(ResetPassword);
 
+// Use the CORS middleware
+app.use(
+  cors({
+    origin: "http://43.204.220.240:4000", // Replace with your front-end origin
+  })
+);
+
 sequelize
   .sync()
   .then((result) => {
