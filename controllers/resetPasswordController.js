@@ -37,7 +37,7 @@ exports.sendMail = async (req, res, next) => {
     apiKey.apiKey = process.env.API_KEY;
     let sendSmtpEmail = new SibApiV3Sdk.SendSmtpEmail();
     sendSmtpEmail.subject = "Expense Tracker Reset Password";
-    sendSmtpEmail.htmlContent = `<html><body><h1>Hi! We got the request from you for reset the password. Here is the link below >>></h1><a href="http://127.0.0.1:5500/public/views/html/resetPassword.html?id=${requestId}"> Click Here</a></body></html>`;
+    sendSmtpEmail.htmlContent = `<html><body><h1>Hi! We got the request from you for reset the password. Here is the link below >>></h1><a href="http://localhost:4000/views/html/resetPassword.html?id=${requestId}"> Click Here</a></body></html>`;
     sendSmtpEmail.sender = { name: "Sugat", email: "sugat.bhagat20@gmail.com" };
     sendSmtpEmail.to = [
       {

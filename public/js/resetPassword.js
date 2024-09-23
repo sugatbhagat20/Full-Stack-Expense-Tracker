@@ -19,7 +19,7 @@ async function updatePassword(e) {
     );
 
     alert(res.data.message);
-    window.location.href = "/";
+    window.location.href = "../html/login.html";
   } catch (error) {
     console.log(error);
     //alert(error.response.data.message);

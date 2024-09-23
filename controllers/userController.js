@@ -11,7 +11,7 @@ const sequelize = require("../utils/database");
 function generateAccessToken(id, email) {
   return jwt.sign({ userId: id, email: email }, process.env.TOKEN);
 }
-console.log(process.env.TOKEN);
+//console.log(process.env.TOKEN);
 exports.isPremiumUser = async (req, res, next) => {
   try {
     if (req.user.isPremiumUser) {
@@ -51,37 +51,34 @@ exports.addUser = async (req, res, next) => {
 
 exports.logIn = async (req, res, next) => {
   try {
-    const email = req.body.email;
-    const password = req.body.password;
-    users
-      .findOne({ where: { email: email } })
-      .then((user) => {
-        if (user) {
-          bcrypt.compare(password, user.password, (err, result) => {
-            if (result === true) {
-              return res.status(200).json({
-                success: true,
-                message: "Login Successful!",
-                token: generateAccessToken(user.id, user.email),
-              });
-            } else {
-              return res
-                .status(401)
-                .json({ success: false, message: "Password Incorrect!" });
-            }
-          });
-        } else {
-          return res
-            .status(404)
-            .json({ success: false, message: "User doesn't Exists!" });
-        }
-      })
-      .catch(res);
-    {
-      console.log(res);
+    const { email, password } = req.body;
+    const user = await users.findOne({ where: { email } });
+
+    if (!user) {
+      return res.status(401).json({ message: "User not found" });
     }
+
+    const isMatch = await bcrypt.compare(password, user.password);
+
+    if (!isMatch) {
+      return res.status(401).json({ message: "Invalid credentials" });
+    }
+
+    const token = jwt.sign(
+      { userId: user.id, email: user.email },
+      process.env.TOKEN,
+      { expiresIn: "1h" }
+    );
+
+    res
+      .status(200)
+      .json({
+        message: "Login successful",
+        token: generateAccessToken(user.id, user.email),
+      });
   } catch (error) {
     console.log(error);
+    res.status(500).json({ message: "Something went wrong" });
   }
 };
 
