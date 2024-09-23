@@ -7,7 +7,7 @@ async function sendMail() {
       email: email,
     });
     alert(res.data.message);
-    window.location.href = "/";
+    window.location.href = "../views/html/resetPassword.html";
   } catch (error) {
     console.log(error);
     alert(error.response.data.message);

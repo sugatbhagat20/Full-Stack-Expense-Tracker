@@ -316,31 +316,40 @@ document.addEventListener("DOMContentLoaded", () => {
   const previousBtn = document.getElementById("prev");
   const nextBtn = document.getElementById("next");
   const recordsDiv = document.getElementById("records");
-  const token = localStorage.getItem("token");
 
   let currentPage = 1;
   let recordsPerPage = parseInt(recordsPerPageSelect.value);
   console.log(recordsPerPage);
   // Function to fetch records from backend
-  async function fetchRecords(page, perPage) {
-    await axios
-      .get(
-        `http://localhost:4000/expense/getExpenses?page=${page}&perPage=${perPage}`,
-        { headers: { Authorization: token } }
-      )
 
-      .then((response) => {
-        // Display fetched records
-        recordsDiv.innerHTML = response.data
-          .map(
-            (record) =>
-              `<div>${
-                record.name + " " + record.amount + " " + record.expense
-              }</div>`
-          )
-          .join("");
-      })
-      .catch((error) => console.error("Error fetching records:", error));
+  async function fetchExpenses() {
+    const token = localStorage.getItem("token");
+    console.log(token);
+    if (!token) {
+      alert("No token found. Please log in again.");
+      window.location.href = "/views/html/login.html";
+      return;
+    }
+
+    try {
+      const response = await axios.get(
+        "http://localhost:4000/expense/getExpenses",
+        {
+          headers: {
+            // Set the token with the 'Bearer' prefix
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      // Process response if needed
+      console.log(response.data);
+    } catch (error) {
+      // Handle error
+      if (error.response && error.response.status === 401) {
+        alert("Session expired. Please log in again.");
+        window.location.href = "/views/html/login.html";
+      }
+    }
   }
 
   // Initial fetch
