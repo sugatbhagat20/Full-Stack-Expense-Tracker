@@ -325,7 +325,7 @@ document.addEventListener("DOMContentLoaded", () => {
   console.log(recordsPerPage);
   // Function to fetch records from backend
 
-  async function fetchRecords() {
+  async function fetchExpenses() {
     const token = localStorage.getItem("token");
     console.log(token);
     if (!token) {
