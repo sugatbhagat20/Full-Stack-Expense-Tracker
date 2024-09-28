@@ -23,7 +23,7 @@ async function downloadFile(e) {
   try {
     console.log("click");
     const token = localStorage.getItem("token");
-    const res = await axios.get("http://3.111.157.45/user/download", {
+    const res = await axios.get("http://3.111.157.45:4000/user/download", {
       headers: { Authorization: token },
     });
     console.log(res);
@@ -40,7 +40,7 @@ async function downloadFile(e) {
 
 async function buyPremium(e) {
   const token = localStorage.getItem("token");
-  const res = await axios.get("http://3.111.157.45/purchase/premium", {
+  const res = await axios.get("http://3.111.157.45:4000/purchase/premium", {
     headers: { Authorization: token },
   });
   //console.log(res);
@@ -70,7 +70,7 @@ async function buyPremium(e) {
     alert("failed");
     console.log(response.error);
     const res = await axios.post(
-      "http://3.111.157.45/purchase/failed",
+      "http://3.111.157.45:4000/purchase/failed",
       {
         order_id: options.order_id,
         payment_id: response.error.metadata.payment_id,
@@ -89,7 +89,7 @@ async function buyPremium(e) {
 
 async function isPremiumUser() {
   const token = localStorage.getItem("token");
-  const res = await axios.get("http://3.111.157.45/user/isPremiumUser", {
+  const res = await axios.get("http://3.111.157.45:4000/user/isPremiumUser", {
     headers: { Authorization: token },
   });
   if (res.data.isPremiumUser) {
@@ -149,7 +149,7 @@ async function addItem(e) {
     list.appendChild(li);
 
     const response = await axios.post(
-      "http://3.111.157.45/expense/addExpense",
+      "http://3.111.157.45:4000/expense/addExpense",
       expense,
       {
         headers: { Authorization: token },
@@ -167,7 +167,7 @@ async function del(e) {
 
   if (e.target.classList.contains("delete")) {
     var li = e.target.parentElement;
-    await axios.delete(`http://3.111.157.45/expense/deleteExpense/${id}`, {
+    await axios.delete(`http://3.111.157.45:4000/expense/deleteExpense/${id}`, {
       headers: { Authorization: token },
     });
 
@@ -195,7 +195,7 @@ async function renderList(e) {
   try {
     const token = localStorage.getItem("token");
     const expenses = await axios.get(
-      "http://3.111.157.45/expense/getAllExpenses",
+      "http://3.111.157.45:4000/expense/getAllExpenses",
       {
         headers: { Authorization: token },
       }
@@ -245,7 +245,7 @@ document.addEventListener("DOMContentLoaded", () => {
   async function fetchRecords(page, perPage) {
     try {
       const response = await axios.get(
-        `http://3.111.157.45/expense/getExpenses?page=${page}&perPage=${perPage}`,
+        `http://3.111.157.45:4000/expense/getExpenses?page=${page}&perPage=${perPage}`,
         {
           headers: {
             Authorization: token, // Ensure 'Bearer' is included for token authorization

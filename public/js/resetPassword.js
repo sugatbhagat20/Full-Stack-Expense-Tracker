@@ -10,10 +10,13 @@ async function updatePassword(e) {
     const requestId = decodedValue.replace(/\\+$/, "");
     //console.log(uuidWithoutBackslashes);
     const newPassword = document.getElementById("newPassword").value;
-    const res = await axios.post("http://3.111.157.45/password/resetPassword", {
-      password: newPassword,
-      requestId: requestId,
-    });
+    const res = await axios.post(
+      "http://3.111.157.45:4000/password/resetPassword",
+      {
+        password: newPassword,
+        requestId: requestId,
+      }
+    );
 
     alert(res.data.message);
     window.location.href = "../html/login.html";
