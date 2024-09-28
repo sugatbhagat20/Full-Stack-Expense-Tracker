@@ -86,26 +86,25 @@ exports.deleteExpense = async (req, res, next) => {
   }
 };
 
-// exports.getAllExpenses = async (req, res, next) => {
-//   try {
-//     const expense = await expenses.findAll({ where: { userId: req.user.id } });
-//     await res.json(expense);
-//   } catch (err) {
-//     console.log(err);
-//   }
-// };
-
+exports.getAllExpenses = async (req, res, next) => {
+  try {
+    const expense = await expenses.findAll({ where: { userId: req.user.id } });
+    await res.json(expense);
+  } catch (err) {
+    console.log(err);
+  }
+};
 exports.getExpenses = async (req, res) => {
   try {
-    const page = req.query.page || 1;
-    const perPage = req.query.perPage || 5;
-    const offset = (page - 1) * perPage;
-    const userId = req.user.id;
+    const page = parseInt(req.query.page) || 1; // Ensure page is an integer
+    const perPage = parseInt(req.query.perPage) || 5; // Ensure perPage is an integer
+    const offset = (page - 1) * perPage; // Calculate the offset based on page and perPage
 
+    // Fetch the records with pagination
     const records = await expenses.findAll({
-      where: { userId: userId },
-      limit: Number(perPage),
-      offset: Number(offset),
+      where: { userId: req.user.id },
+      limit: perPage, // Limit should be an integer
+      offset: offset, // Offset should be an integer
     });
 
     res.json(records);

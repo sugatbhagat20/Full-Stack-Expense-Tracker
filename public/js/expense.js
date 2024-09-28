@@ -12,9 +12,9 @@ const reportsLink = document.getElementById("reportsLink");
 var leaderboardBtn = document.getElementById("leaderBoard");
 
 // list.addEventListener("click", editItem);
-// document.addEventListener("DOMContentLoaded", () => {
-//   renderList();
-// });
+document.addEventListener("DOMContentLoaded", () => {
+  renderList();
+});
 document.addEventListener("DOMContentLoaded", isPremiumUser);
 
 download.addEventListener("click", downloadFile);
@@ -23,7 +23,7 @@ async function downloadFile(e) {
   try {
     console.log("click");
     const token = localStorage.getItem("token");
-    const res = await axios.get("http://43.204.220.240:4000/user/download", {
+    const res = await axios.get("http://3.111.157.45/user/download", {
       headers: { Authorization: token },
     });
     console.log(res);
@@ -40,7 +40,7 @@ async function downloadFile(e) {
 
 async function buyPremium(e) {
   const token = localStorage.getItem("token");
-  const res = await axios.get("http://43.204.220.240:4000/purchase/premium", {
+  const res = await axios.get("http://3.111.157.45/purchase/premium", {
     headers: { Authorization: token },
   });
   //console.log(res);
@@ -51,7 +51,7 @@ async function buyPremium(e) {
     handler: async function (response) {
       console.log(response);
       const res = await axios.post(
-        "http://43.204.220.240:4000/purchase/updateTransactionStatus",
+        "http://localhost/purchase/updateTransactionStatus",
         {
           order_id: options.order_id,
           payment_id: response.razorpay_payment_id,
@@ -70,7 +70,7 @@ async function buyPremium(e) {
     alert("failed");
     console.log(response.error);
     const res = await axios.post(
-      "http://43.204.220.240:4000/purchase/failed",
+      "http://3.111.157.45/purchase/failed",
       {
         order_id: options.order_id,
         payment_id: response.error.metadata.payment_id,
@@ -89,7 +89,7 @@ async function buyPremium(e) {
 
 async function isPremiumUser() {
   const token = localStorage.getItem("token");
-  const res = await axios.get("http://43.204.220.240:4000/user/isPremiumUser", {
+  const res = await axios.get("http://3.111.157.45/user/isPremiumUser", {
     headers: { Authorization: token },
   });
   if (res.data.isPremiumUser) {
@@ -116,6 +116,7 @@ async function addItem(e) {
       amount: amountItem.value,
       expense: input3,
     };
+
     var li = document.createElement("li");
     var deleteBtn = document.createElement("button");
     //var editBtn = document.createElement("button");
@@ -128,7 +129,7 @@ async function addItem(e) {
     // Add a unique key as a data attribute to the li element
     //li.dataset.name = input1;
     //li.dataset.amount = input2;
-    //deleteBtn.id = `${expense.id}`;
+
     console.log(expense);
     deleteBtn.appendChild(document.createTextNode("Delete"));
     //editBtn.appendChild(document.createTextNode("Edit"));
@@ -146,9 +147,14 @@ async function addItem(e) {
 
     //append li to ul
     list.appendChild(li);
-    await axios.post("http://43.204.220.240:4000/expense/addExpense", expense, {
-      headers: { Authorization: token },
-    });
+
+    const response = await axios.post(
+      "http://3.111.157.45/expense/addExpense",
+      expense,
+      {
+        headers: { Authorization: token },
+      }
+    );
   } catch (e) {
     console.log(e);
   }
@@ -161,12 +167,9 @@ async function del(e) {
 
   if (e.target.classList.contains("delete")) {
     var li = e.target.parentElement;
-    await axios.delete(
-      `http://43.204.220.240:4000/expense/deleteExpense/${id}`,
-      {
-        headers: { Authorization: token },
-      }
-    );
+    await axios.delete(`http://3.111.157.45/expense/deleteExpense/${id}`, {
+      headers: { Authorization: token },
+    });
 
     list.removeChild(li);
   }
@@ -188,170 +191,80 @@ async function del(e) {
 //   }
 // }
 
-// async function renderList(e) {
-//   try {
-//     const token = localStorage.getItem("token");
-//     const expenses = await axios.get(
-//       "http://43.204.220.240:4000/expense/getAllExpenses",
-//       {
-//         headers: { Authorization: token },
-//       }
-//     );
+async function renderList(e) {
+  try {
+    const token = localStorage.getItem("token");
+    const expenses = await axios.get(
+      "http://3.111.157.45/expense/getAllExpenses",
+      {
+        headers: { Authorization: token },
+      }
+    );
+    //list.innerHTML = ""; // Clear the list before adding new items
+    expenses.data.forEach((expense) => {
+      var li = document.createElement("li");
+      var deleteBtn = document.createElement("button");
+      //var editBtn = document.createElement("button");
 
-//     expenses.data.forEach((expense) => {
-//       var li = document.createElement("li");
-//       var deleteBtn = document.createElement("button");
-//       //var editBtn = document.createElement("button");
+      //give classname to the li element
+      li.className = "items";
+      deleteBtn.className = "delete btn btn-dark";
 
-//       //give classname to the li element
-//       li.className = "items";
-//       deleteBtn.className = "delete btn btn-dark";
+      deleteBtn.id = `${expense.id}`;
+      deleteBtn.appendChild(document.createTextNode("Delete"));
+      //editBtn.appendChild(document.createTextNode("Edit"));
+      let span1 = document.createElement("span");
+      span1.textContent = `${expense.name} `;
+      let span2 = document.createElement("span");
+      span2.textContent = `${expense.amount} `;
+      let span3 = document.createElement("span");
+      span3.textContent = `${expense.expense} `;
+      li.appendChild(span1);
+      li.appendChild(span2);
+      li.appendChild(span3);
+      li.appendChild(deleteBtn);
 
-//       deleteBtn.id = `${expense.id}`;
-//       deleteBtn.appendChild(document.createTextNode("Delete"));
-//       //editBtn.appendChild(document.createTextNode("Edit"));
-//       let span1 = document.createElement("span");
-//       span1.textContent = `${expense.name} `;
-//       let span2 = document.createElement("span");
-//       span2.textContent = `${expense.amount} `;
-//       let span3 = document.createElement("span");
-//       span3.textContent = `${expense.expense} `;
-//       li.appendChild(span1);
-//       li.appendChild(span2);
-//       li.appendChild(span3);
-//       li.appendChild(deleteBtn);
-
-//       list.appendChild(li);
-//     });
-//   } catch (e) {
-//     console.log(e);
-//   }
-// }
-
-// document.querySelector(".page").addEventListener("click", async (e) => {
-//   try {
-//     if (e.target.classList.contains("page-btn")) {
-//       console.log("clicked");
-//       console.log(e.target.id == "next");
-//       const token = localStorage.getItem("token");
-//       const page = e.target.value;
-//       const result = await axios.get(
-//         `http://43.204.220.240:4000/expense/getExpenses?page=${page}`,
-//         { headers: { Authorization: token } }
-//       );
-//       console.log(result);
-//       let users = result.data.expenses;
-
-//       users.forEach((expense) => {
-//         var li = document.createElement("li");
-//         var deleteBtn = document.createElement("button");
-//         //var editBtn = document.createElement("button");
-
-//         //give classname to the li element
-//         li.className = "items";
-//         deleteBtn.className = "delete btn btn-dark";
-
-//         deleteBtn.id = `${expense.id}`;
-//         deleteBtn.appendChild(document.createTextNode("Delete"));
-//         //editBtn.appendChild(document.createTextNode("Edit"));
-//         let span1 = document.createElement("span");
-//         span1.textContent = `${expense.name} `;
-//         let span2 = document.createElement("span");
-//         span2.textContent = `${expense.amount} `;
-//         let span3 = document.createElement("span");
-//         span3.textContent = `${expense.expense} `;
-//         li.appendChild(span1);
-//         li.appendChild(span2);
-//         li.appendChild(span3);
-//         li.appendChild(deleteBtn);
-
-//         list.appendChild(li);
-//       });
-//       let prev = document.getElementById("prev");
-//       let curr = document.getElementById("curr");
-//       let next = document.getElementById("next");
-
-//       if (e.target.id == "next") {
-//         prev.classList.remove("hide");
-//         prev.textContent = curr.textContent;
-//         prev.value = curr.value;
-
-//         curr.textContent = next.textContent;
-//         curr.value = next.value;
-
-//         if (result.data.totalExpenses > 2 * page) {
-//           next.value = +page + 1;
-//           next.textContent = +page + 1;
-//         } else {
-//           next.classList.add("hide");
-//         }
-//       } else if (e.target.id == "prev") {
-//         if (page > 1) {
-//           next.classList.remove("hide");
-//           prev.textContent = page - 1;
-//           prev.value = page - 1;
-
-//           curr.textContent = page;
-//           curr.value = page;
-
-//           next.textContent = +page + 1;
-//           next.value = +page + 1;
-//         } else {
-//           prev.classList.add("hide");
-//           curr.textContent = 1;
-//           curr.value = 1;
-//           if (result.data.totalExpenses > 2 * page) {
-//             next.value = 2;
-//             next.textContent = 2;
-//           } else {
-//             next.classList.add("hide");
-//           }
-//         }
-//       }
-//     }
-//   } catch (e) {
-//     console.log(e);
-//   }
-// });
+      list.appendChild(li);
+    });
+  } catch (e) {
+    console.log(e);
+  }
+}
 
 document.addEventListener("DOMContentLoaded", () => {
   const recordsPerPageSelect = document.getElementById("rows");
   const previousBtn = document.getElementById("prev");
   const nextBtn = document.getElementById("next");
   const recordsDiv = document.getElementById("records");
+  const token = localStorage.getItem("token");
 
   let currentPage = 1;
   let recordsPerPage = parseInt(recordsPerPageSelect.value);
-  console.log(recordsPerPage);
-  // Function to fetch records from backend
 
-  async function fetchExpenses() {
-    const token = localStorage.getItem("token");
-    console.log(token);
-    if (!token) {
-      alert("No token found. Please log in again.");
-      window.location.href = "/views/html/login.html";
-      return;
-    }
-
+  // Function to fetch records from the backend
+  async function fetchRecords(page, perPage) {
     try {
       const response = await axios.get(
-        "http://43.204.220.240:4000/expense/getExpenses",
+        `http://3.111.157.45/expense/getExpenses?page=${page}&perPage=${perPage}`,
         {
           headers: {
-            // Set the token with the 'Bearer' prefix
-            Authorization: `Bearer ${token}`,
+            Authorization: token, // Ensure 'Bearer' is included for token authorization
           },
         }
       );
-      // Process response if needed
-      console.log(response.data);
+
+      const data = response.data; // Axios returns the data directly in response.data
+
+      // Display fetched records
+      recordsDiv.innerHTML = data
+        .map(
+          (record) => `<div><strong>Name:</strong> ${record.name}
+              <strong>Amount:</strong> ${record.amount}
+              <strong>Category:</strong> ${record.expense}</div>`
+        )
+        .join("");
     } catch (error) {
-      // Handle error
-      if (error.response && error.response.status === 401) {
-        alert("Session expired. Please log in again.");
-        window.location.href = "/views/html/login.html";
-      }
+      console.error("Error fetching records:", error);
     }
   }
 

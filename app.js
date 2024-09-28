@@ -21,7 +21,7 @@ dotenv.config();
 // app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-// Serve static files from the "public" directory
+//Serve static files from the "public" directory
 app.use(express.static(path.join(__dirname, "public")));
 
 app.use("/user", userRoute);
@@ -32,10 +32,10 @@ app.use("/premium", leaderboardRouter);
 app.use("/password", resetPasswordRouter);
 app.use("/reports", reportsRouter);
 
-app.use((req, res) => {
-  console.log("urlll", req.url);
-  res.sendFile(path.join(__dirname, `public/${req.url}`));
-});
+// app.use((req, res) => {
+//   console.log("urlll", req.url);
+//   res.sendFile(path.join(__dirname, `public/${req.url}`));
+// });
 
 user.hasMany(expense);
 expense.belongsTo(user);
@@ -49,7 +49,7 @@ user.hasMany(ResetPassword);
 // Use the CORS middleware
 app.use(
   cors({
-    origin: "http://43.204.220.240:4000", // Replace with your front-end origin
+    origin: "http://3.111.157.45", // Replace with your front-end origin
   })
 );
 

@@ -4,11 +4,11 @@ const expenseController = require("../controllers/expenseController");
 const userAuthentication = require("../middleware/auth");
 //router.use(express.static("public"));
 //router.get("/", expenseController.getHomePage);
-// router.get(
-//   "/getAllExpenses",
-//   userAuthentication,
-//   expenseController.getAllExpenses
-// );
+router.get(
+  "/getAllExpenses",
+  userAuthentication,
+  expenseController.getAllExpenses
+);
 
 router.post("/addExpense", userAuthentication, expenseController.addExpense);
 //router.get("/download", userAuthentication, expenseController.downloadExpense);
