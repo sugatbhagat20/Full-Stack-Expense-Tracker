@@ -20,7 +20,7 @@ async function getDailyReport(e) {
     console.log(formattedDate);
     let totalAmount = 0;
     const res = await axios.post(
-      "http://3.111.157.45:4000/reports/dailyReports",
+      "http://13.233.165.10:4000/reports/dailyReports",
       {
         date: formattedDate,
       },
@@ -90,7 +90,7 @@ async function getMonthlyReport(e) {
     console.log(formattedMonth);
     let totalAmount = 0;
     const res = await axios.post(
-      "http://3.111.157.45:4000/reports/monthlyReports",
+      "http://13.233.165.10:4000/reports/monthlyReports",
       {
         month: formattedMonth,
       },

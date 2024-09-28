@@ -12,7 +12,7 @@ async function logIn(e) {
   };
   try {
     const response = await axios.post(
-      "http://3.111.157.45:4000/user/logIn",
+      "http://13.233.165.10:4000/user/logIn",
       user
     );
     alert(response.data.message);
