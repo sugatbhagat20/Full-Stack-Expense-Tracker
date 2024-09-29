@@ -49,7 +49,7 @@ user.hasMany(ResetPassword);
 // Use the CORS middleware
 app.use(
   cors({
-    origin: "http://13.233.165.10:4000", // Replace with your front-end origin
+    origin: "http://13.127.203.234:4000", // Replace with your front-end origin
   })
 );
 

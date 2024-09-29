@@ -23,7 +23,7 @@ async function downloadFile(e) {
   try {
     console.log("click");
     const token = localStorage.getItem("token");
-    const res = await axios.get("http://13.233.165.10:4000/user/download", {
+    const res = await axios.get("http://13.127.203.234:4000/user/download", {
       headers: { Authorization: token },
     });
     console.log(res);
@@ -40,7 +40,7 @@ async function downloadFile(e) {
 
 async function buyPremium(e) {
   const token = localStorage.getItem("token");
-  const res = await axios.get("http://13.233.165.10:4000/purchase/premium", {
+  const res = await axios.get("http://13.127.203.234:4000/purchase/premium", {
     headers: { Authorization: token },
   });
   //console.log(res);
@@ -51,7 +51,7 @@ async function buyPremium(e) {
     handler: async function (response) {
       console.log(response);
       const res = await axios.post(
-        "http://13.233.165.10/purchase/updateTransactionStatus",
+        "http://13.127.203.234/purchase/updateTransactionStatus",
         {
           order_id: options.order_id,
           payment_id: response.razorpay_payment_id,
@@ -70,7 +70,7 @@ async function buyPremium(e) {
     alert("failed");
     console.log(response.error);
     const res = await axios.post(
-      "http://13.233.165.10:4000/purchase/failed",
+      "http://13.127.203.234:4000/purchase/failed",
       {
         order_id: options.order_id,
         payment_id: response.error.metadata.payment_id,
@@ -89,7 +89,7 @@ async function buyPremium(e) {
 
 async function isPremiumUser() {
   const token = localStorage.getItem("token");
-  const res = await axios.get("http://13.233.165.10:4000/user/isPremiumUser", {
+  const res = await axios.get("http://13.127.203.234:4000/user/isPremiumUser", {
     headers: { Authorization: token },
   });
   if (res.data.isPremiumUser) {
@@ -149,7 +149,7 @@ async function addItem(e) {
     list.appendChild(li);
 
     const response = await axios.post(
-      "http://13.233.165.10:4000/expense/addExpense",
+      "http://13.127.203.234:4000/expense/addExpense",
       expense,
       {
         headers: { Authorization: token },
@@ -167,9 +167,12 @@ async function del(e) {
 
   if (e.target.classList.contains("delete")) {
     var li = e.target.parentElement;
-    await axios.delete(`http://13.233.165.10:4000/expense/deleteExpense/${id}`, {
-      headers: { Authorization: token },
-    });
+    await axios.delete(
+      `http://13.127.203.234:4000/expense/deleteExpense/${id}`,
+      {
+        headers: { Authorization: token },
+      }
+    );
 
     list.removeChild(li);
   }
@@ -195,7 +198,7 @@ async function renderList(e) {
   try {
     const token = localStorage.getItem("token");
     const expenses = await axios.get(
-      "http://13.233.165.10:4000/expense/getAllExpenses",
+      "http://13.127.203.234:4000/expense/getAllExpenses",
       {
         headers: { Authorization: token },
       }
@@ -245,7 +248,7 @@ document.addEventListener("DOMContentLoaded", () => {
   async function fetchRecords(page, perPage) {
     try {
       const response = await axios.get(
-        `http://13.233.165.10:4000/expense/getExpenses?page=${page}&perPage=${perPage}`,
+        `http://13.127.203.234:4000/expense/getExpenses?page=${page}&perPage=${perPage}`,
         {
           headers: {
             Authorization: token, // Ensure 'Bearer' is included for token authorization
