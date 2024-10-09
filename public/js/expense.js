@@ -51,7 +51,7 @@ async function buyPremium(e) {
     handler: async function (response) {
       console.log(response);
       const res = await axios.post(
-        "http://13.202.23.253/purchase/updateTransactionStatus",
+        "http://13.202.23.253:4000/purchase/updateTransactionStatus",
         {
           order_id: options.order_id,
           payment_id: response.razorpay_payment_id,
@@ -167,9 +167,12 @@ async function del(e) {
 
   if (e.target.classList.contains("delete")) {
     var li = e.target.parentElement;
-    await axios.delete(`http://13.202.23.253:4000/expense/deleteExpense/${id}`, {
-      headers: { Authorization: token },
-    });
+    await axios.delete(
+      `http://13.202.23.253:4000/expense/deleteExpense/${id}`,
+      {
+        headers: { Authorization: token },
+      }
+    );
 
     list.removeChild(li);
   }
