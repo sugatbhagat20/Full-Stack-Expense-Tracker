@@ -11,7 +11,7 @@ async function logIn(e) {
     password: e.target.password.value,
   };
   try {
-    const response = await axios.post("http://13.127.203.234/user/logIn", user);
+    const response = await axios.post("http://13.202.23.253/user/logIn", user);
     alert(response.data.message);
     console.log(response);
     localStorage.setItem("token", response.data.token);

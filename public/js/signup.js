@@ -14,7 +14,7 @@ async function signUp(e) {
   };
   try {
     let res;
-    res = await axios.post("http://13.127.203.234:4000/user/signUp", user);
+    res = await axios.post("http://13.202.23.253:4000/user/signUp", user);
     console.log(res);
   } catch (e) {
     console.log(e);
