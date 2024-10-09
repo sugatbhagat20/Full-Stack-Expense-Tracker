@@ -61,7 +61,8 @@ async function buyPremium(e) {
 
       //console.log(res);
       alert("Welcome to our Premium Membership");
-      window.location.reload();
+      //window.location.reload();
+      window.location.href = "../html/login.html";
       localStorage.setItem("token", res.data.token);
     },
   };
