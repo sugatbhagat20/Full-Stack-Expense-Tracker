@@ -14,15 +14,22 @@ exports.dailyReports = async (req, res, next) => {
   }
 };
 
+const { startOfMonth, endOfMonth } = require("date-fns"); // Import functions from date-fns to calculate the start and end of the month
+
 exports.monthlyReports = async (req, res, next) => {
   try {
-    const month = req.body.month;
+    const month = req.body.month; // The month in 'MM' format
+    const year = new Date().getFullYear(); // You can adjust this to take year dynamically if required
 
-    // Ensure the query matches '%-MM-%' where MM is the month.
+    // Create start and end dates for the selected month
+    const startDate = startOfMonth(new Date(`${year}-${month}-01`));
+    const endDate = endOfMonth(new Date(`${year}-${month}-01`));
+
+    // Find all expenses within the selected month range
     const expenses = await Expense.findAll({
       where: {
         createdAt: {
-          [Op.like]: `%-${month}-%`, // Use Op.like and proper string interpolation
+          [Op.between]: [startDate, endDate], // Filter between the start and end dates of the month
         },
         userId: req.user.id,
       },
