@@ -1,5 +1,5 @@
 const Expense = require("../model/expenseModel");
-const sequelize = require("sequelize");
+const { Op } = require("sequelize"); // Import Op for Sequelize operators
 
 exports.dailyReports = async (req, res, next) => {
   try {
@@ -18,10 +18,11 @@ exports.monthlyReports = async (req, res, next) => {
   try {
     const month = req.body.month;
 
+    // Ensure the query matches '%-MM-%' where MM is the month.
     const expenses = await Expense.findAll({
       where: {
         createdAt: {
-          [sequelize.like]: `%-${month}-%`,
+          [Op.like]: `%-${month}-%`, // Use Op.like and proper string interpolation
         },
         userId: req.user.id,
       },
@@ -31,5 +32,8 @@ exports.monthlyReports = async (req, res, next) => {
     return res.send(expenses);
   } catch (error) {
     console.log(error);
+    res
+      .status(500)
+      .send({ error: "An error occurred while fetching monthly reports" });
   }
 };
